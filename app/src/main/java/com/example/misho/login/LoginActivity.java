@@ -191,6 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         if (emailGood && passwordGood) {
+            //hides keyboard
             InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             mgr.hideSoftInputFromWindow(mEmailSignInButton.getWindowToken(), 0);
             showProgress(true);
