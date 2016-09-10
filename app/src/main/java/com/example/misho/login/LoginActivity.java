@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -24,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -162,50 +164,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-        boolean emailGood = false;
-        boolean passwordGood = true;
+        boolean emailGood;
+        boolean passwordGood;
 
-        if (!isPasswordValid(password)) {
-            passwordGood = false;
-            TextInputLayout til = (TextInputLayout) findViewById(R.id.tilPasswordSignIn);
-            til.setErrorEnabled(true);
-            //todo: fix password conditions, NOT JUST 'TOO SHORT'
-            til.setError("Password too short");
-            focusView = mPasswordView;
-            cancel = true;
-        } else {
-
-            passwordGood = true;
-            TextInputLayout til = (TextInputLayout) findViewById(R.id.tilPasswordSignIn);
-            til.setErrorEnabled(false);
-        }
+        passwordGood = true;
+        TextInputLayout til = (TextInputLayout) findViewById(R.id.tilPasswordSignIn);
+        til.setErrorEnabled(false);
 
         if (TextUtils.isEmpty(email)) {
 
             emailGood = false;
-            TextInputLayout til = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
-            til.setErrorEnabled(true);
-            til.setError("This field is required");
-            focusView = mEmailView;
-            cancel = true;
+            TextInputLayout til3 = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
+            til3.setErrorEnabled(true);
+            til3.setError("This field is required");
         } else if (!isEmailValid(email)) {
 
             emailGood = false;
-            TextInputLayout til = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
-            til.setErrorEnabled(true);
-            til.setError("This email address is invalid");
-            focusView = mEmailView;
-            cancel = true;
+            TextInputLayout til1 = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
+            til1.setErrorEnabled(true);
+            til1.setError("This email address is invalid");
         } else {
 
             emailGood = true;
-            TextInputLayout til = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
-            til.setErrorEnabled(false);
+            TextInputLayout til2 = (TextInputLayout) findViewById(R.id.tilEmailSignIn);
+            til2.setErrorEnabled(false);
         }
 
         if (emailGood && passwordGood) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(mEmailSignInButton.getWindowToken(), 0);
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -215,12 +202,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        //return password.length() > 5;
-        return true;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -310,7 +291,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        // int IS_PRIMARY = 1;
     }
 
     /////////////////////////////////////////////////////////////////////// ASYNC TASK
@@ -336,7 +316,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             BufferedReader reader = null;
 
             String serverJsonStr = null;
-            String format = "json";
 
             try {
                 final String FORECAST_BASE_URL =
@@ -397,9 +376,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 }
             }
-
-            //final String LOG_TAG = "tag";
-            //final String LOG_STATUS = "status";
 
             JSONObject serverJson = null;
             try {
