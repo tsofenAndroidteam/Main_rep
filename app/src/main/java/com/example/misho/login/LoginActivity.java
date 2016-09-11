@@ -319,13 +319,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String serverJsonStr = null;
 
             try {
-                final String FORECAST_BASE_URL =
+                final String SERVER_BASE_URL =
                         "http://52.29.110.203:8080/LibArab/signIn/doSignIn?";
 
                 final String USER_PARAM = "username";
                 final String PASS_PARAM = "password";
 
-                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
                         .appendQueryParameter(USER_PARAM, mEmail)
                         .appendQueryParameter(PASS_PARAM, mPassword)
                         .build();
