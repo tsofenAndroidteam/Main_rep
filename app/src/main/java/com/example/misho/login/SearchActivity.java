@@ -41,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
         fromyear = (EditText) findViewById(R.id.fromyear_editText);
         toyear = (EditText) findViewById(R.id.toYear_editText);
         searchbutton = (Button) findViewById(R.id.searchbtn);
-        final String _SEARCH_URL = "http://52.29.110.203:8080/LibArab/search/booktitle?";
+        final String _SEARCH_URL = Params.Server + "/search/booktitle?";
 
 
         searchbutton.setOnClickListener(new View.OnClickListener(){

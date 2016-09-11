@@ -186,8 +186,8 @@ public class SignUp extends AppCompatActivity {
         private final String mPassword;
         private final String mFirstname;
         private final String mLastname;
-        private final String mGender;
-        private final String mUsertype;
+        private  String mGender;
+        private  String mUsertype;
 
         public UserSignUpTask(String mEmail, String mPassword, String mFirstname, String mLastname, String mGender, String mUsertype) {
             this.mEmail = mEmail;
@@ -212,10 +212,10 @@ public class SignUp extends AppCompatActivity {
             String serverJsonStr = null;
 
             try {
-                final String Server_BASE_URL =
-                        "http://52.29.110.203:8080/LibArab/SignUp/dosignup?";
+                final String Server_BASE_URL = Params.Server + "SignUp/dosignup?";
 
-                final String USER_PARAM = "username";
+
+                final String USER_PARAM = "email";
                 final String PASS_PARAM = "password";
                 final String FIRSTNAME_PARAM = "firstname";
                 final String LASTNAME_PARAM = "lastname";
@@ -235,15 +235,35 @@ public class SignUp extends AppCompatActivity {
                             .appendQueryParameter(LASTNAME_PARAM, mLastname)
                             .build();
                 }
-                if (mGender.equals("Gender")) {
-                    builtUri = Uri.parse(builtUri.toString()).buildUpon()
-                            .appendQueryParameter(GENDER_PARAM, mGender)
-                            .build();
+                if (!mGender.equals("Gender")) {
+                    if (mGender.equals("Male")){
+                        mGender = "false";
+                        builtUri = Uri.parse(builtUri.toString()).buildUpon()
+                                .appendQueryParameter(GENDER_PARAM, mGender)
+                                .build();
+                        mGender = "Male";
+                    }else{
+                        mGender = "true";
+                        builtUri = Uri.parse(builtUri.toString()).buildUpon()
+                                .appendQueryParameter(GENDER_PARAM, mGender)
+                                .build();
+                        mGender = "Female";
+                    }
                 }
-                if (mUsertype.equals("Account type")) {
-                    builtUri = Uri.parse(builtUri.toString()).buildUpon()
-                            .appendQueryParameter(USERTYPE_PARAM, mUsertype)
-                            .build();
+                if (!mUsertype.equals("Account type")) {
+                    if(mUsertype.equals("Regular")) {
+                        mUsertype = "false";
+                        builtUri = Uri.parse(builtUri.toString()).buildUpon()
+                                .appendQueryParameter(USERTYPE_PARAM, mUsertype)
+                                .build();
+                        mUsertype = "Regular";
+                    }else {
+                        mUsertype = "true";
+                        builtUri = Uri.parse(builtUri.toString()).buildUpon()
+                                .appendQueryParameter(USERTYPE_PARAM, mUsertype)
+                                .build();
+                        mUsertype = "Regular";
+                    }
                 }
                 URL url = new URL(builtUri.toString());
                 Log.v("URL", builtUri.toString());
